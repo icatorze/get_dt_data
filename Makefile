@@ -6,9 +6,6 @@ obj-m += get_dt_data.o
 # The default action
 all: modules
 
-user:
-	$(MAKE) -C user
-
 modules:
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
 
@@ -17,6 +14,5 @@ modules_install:
 	
 clean:
 	rm -rf *.o 
-	$(MAKE) -C user clean
 	
-.PHONY: modules modules_install user clean
+.PHONY: modules modules_install clean
