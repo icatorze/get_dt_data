@@ -1,9 +1,5 @@
-ifndef KERNEL_DIR
-$(error KERNEL_DIR must be set in the command line)
-endif
+KERNELDIR ?= /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
-ARCH ?= arm
-CROSS_COMPILE ?= arm-poky-linux-gnueabi-
 
 # This specifies the kernel module to be compiled
 obj-m += get_dt_data.o
@@ -11,13 +7,17 @@ obj-m += get_dt_data.o
 # The default action
 all: modules
 
+user:
+	$(MAKE) -C user
+
+modules:
+	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
+
 modules_install:
-	$(MAKE) -C $(KERNEL_DIR) M=$(PWD) modules_install
-
-
-# The main tasks
-modules clean:
-	$(MAKE) -C $(KERNEL_DIR) \
-            ARCH=$(ARCH) \
-            CROSS_COMPILE=$(CROSS_COMPILE) \
-            SUBDIRS=$(PWD) $@
+	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules_install
+	
+clean:
+	rm -rf *.o 
+	$(MAKE) -C user clean
+	
+.PHONY: modules modules_install user clean
