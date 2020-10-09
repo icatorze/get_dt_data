@@ -1,4 +1,3 @@
-KERNELDIR ?= /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
 
 # This specifies the kernel module to be compiled
