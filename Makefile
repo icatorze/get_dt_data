@@ -11,9 +11,13 @@ obj-m += get_dt_data.o
 # The default action
 all: modules
 
+modules_install:
+	$(MAKE) -C $(KERNEL_DIR) M=$(PWD) modules_install
+
+
 # The main tasks
 modules clean:
-	make -C $(KERNEL_DIR) \
+	$(MAKE) -C $(KERNEL_DIR) \
             ARCH=$(ARCH) \
             CROSS_COMPILE=$(CROSS_COMPILE) \
             SUBDIRS=$(PWD) $@
